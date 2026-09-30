@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Asset Library{% endblock %}
+{% block content %}
+<section class="hero"><p class="eyebrow">Document control</p><h1>Find the right asset, fast.</h1><p>Browse item and supplier documentation, see expiry dates, and open available files.</p></section>
+<div class="cards"><a class="card" href="{{ url_for('items') }}"><span class="card-kicker">Catalog</span><h2>Item assets</h2><p>View assets attached to every item.</p></a><a class="card" href="{{ url_for('suppliers') }}"><span class="card-kicker">Partners</span><h2>Supplier assets</h2><p>View supplier-level certifications and documents.</p></a></div>
+{% endblock %}

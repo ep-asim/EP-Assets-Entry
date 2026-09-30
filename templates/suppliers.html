@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Supplier assets{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Partners</p><h1>Suppliers and assets</h1></div><a class="button" href="{{ url_for('new_supplier_asset') }}">Add supplier asset</a></div>
+<form class="searchbar" method="get"><input name="q" value="{{ search }}" placeholder="Search supplier name or code"><button class="button" type="submit">Search</button>{% if search %}<a href="{{ url_for('suppliers') }}">Clear</a>{% endif %}</form>
+{% for supplier in suppliers %}<section class="entity"><div class="entity-heading"><div><h2>{{ supplier.company_name }}</h2><p class="muted">{{ supplier.supplier_code }}</p></div><a href="{{ url_for('new_supplier_asset', supplier_code=supplier.supplier_code) }}">Add asset</a></div>{% set rows = assets.get(supplier.supplier_code, []) %}{% if rows %}<div class="asset-grid">{% for asset in rows %}{% include '_asset_card.html' %}{% endfor %}</div>{% else %}<p class="muted">No assets recorded for this supplier.</p>{% endif %}</section>{% else %}<p class="empty">{% if search %}No suppliers matched “{{ search }}”.{% else %}No suppliers found.{% endif %}</p>{% endfor %}
+{% endblock %}

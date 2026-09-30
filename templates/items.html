@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Item assets{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Catalog</p><h1>Items and assets</h1></div><a class="button" href="{{ url_for('new_item_asset') }}">Add item asset</a></div>
+<form class="searchbar" method="get"><input name="q" value="{{ search }}" placeholder="Search item number"><button class="button" type="submit">Search</button>{% if search %}<a href="{{ url_for('items') }}">Clear</a>{% endif %}</form>
+{% for item in items %}<section class="entity"><div class="entity-heading"><h2>{{ item.item_number }}</h2><a href="{{ url_for('new_item_asset', item_number=item.item_number) }}">Add asset</a></div>{% set rows = assets.get(item.item_number, []) %}{% if rows %}<div class="asset-grid">{% for asset in rows %}{% include '_asset_card.html' %}{% endfor %}</div>{% else %}<p class="muted">No assets recorded for this item.</p>{% endif %}</section>{% else %}<p class="empty">{% if search %}No items matched “{{ search }}”.{% else %}No items found.{% endif %}</p>{% endfor %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if mode == 'edit' else 'Add' }} {{ kind }} asset{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">{{ 'Edit' if mode == 'edit' else 'New' }} record</p><h1>{{ 'Edit' if mode == 'edit' else 'Add' }} {{ kind }} asset</h1></div></div>
+<form class="form-card" method="post" action="{% if mode == 'edit' %}{{ url_for('edit_asset', kind=kind, asset_id=asset.id) }}{% elif kind == 'item' %}{{ url_for('create_item_asset') }}{% else %}{{ url_for('create_supplier_asset') }}{% endif %}">
+  {% if mode == 'create' %}<label>{{ 'Item' if kind == 'item' else 'Supplier' }}
+    <select name="{{ 'item_number' if kind == 'item' else 'supplier_code' }}" required><option value="">Choose…</option>{% for choice in choices %}{% if kind == 'item' %}<option value="{{ choice.item_number }}" {% if selected == choice.item_number %}selected{% endif %}>{{ choice.item_number }}</option>{% else %}<option value="{{ choice.supplier_code }}" {% if selected == choice.supplier_code %}selected{% endif %}>{{ choice.company_name }} — {{ choice.supplier_code }}</option>{% endif %}{% endfor %}</select>
+  </label>{% endif %}
+  <label>Asset type<select name="asset_type" required>{% for value in ['PDF', 'Google Doc'] %}<option value="{{ value }}" {% if (asset and asset.asset_type == value) or (not asset and value == 'PDF') %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>
+  <label>Certification type<input name="certification_type" maxlength="64" value="{{ asset.certification_type if asset else '' }}" required></label>
+  <label>Audience<select name="audience" required>{% for value in ['internal', 'customer-facing', 'both'] %}<option value="{{ value }}" {% if asset and asset.audience == value %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>
+  <div class="form-row"><label>Start date<input type="date" name="start_date" value="{{ asset.start_date if asset else '' }}" required></label><label>Expiry date<input type="date" name="expiry_date" value="{{ asset.expiry_date if asset else '' }}"></label></div>
+  <label>Location<input name="location" maxlength="512" value="{{ asset.location if asset else '' }}" placeholder="Root folder / mapped location"></label>
+  <label>Document link<input type="url" name="link" maxlength="2048" value="{{ asset.link if asset else '' }}" placeholder="https://drive.google.com/…"></label>
+  <div class="form-actions"><a class="button secondary" href="{{ url_for('items' if kind == 'item' else 'suppliers') }}">Cancel</a><button class="button" type="submit">{{ 'Save changes' if mode == 'edit' else 'Create asset' }}</button></div>
+</form>
+{% endblock %}

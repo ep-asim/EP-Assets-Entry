@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+*.json
+!.github/**/*.json
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+.DS_Store
